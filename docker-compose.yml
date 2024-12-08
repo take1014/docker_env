@@ -1,0 +1,17 @@
+services:
+  pytorch_container:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pytorch_container
+    runtime: nvidia
+    container_name: pytorch_container
+    volumes:
+      - .:/app/pytorch_container
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
