@@ -1,23 +1,30 @@
-# ベースイメージ(CUDA)の指定
+# base image
 FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
 
-# 必要なパッケージをインストール
-RUN apt-get update && apt-get install -y python3-pip python3-venv git nano
+# install packages
+RUN apt-get update && apt-get install -y python3-pip python3-dev python3-venv curl git vim tmux
 
-# 作業ディレクトリを設定
+# woriking directory
 WORKDIR /app
 
-# アプリケーションコードをコピー
-COPY . /app
+# copy application codes
+# COPY . /app
 
-# Python仮想環境の作成
-RUN python3 -m venv /app/.venv
+# pip install libraries
+# pytorch
+RUN pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121
+# others
+RUN pip install pyyaml hydra-core natsort tqdm onnx onnxruntime
 
-# 仮想環境をアクティベートするコマンドを.bashrcに追加
-RUN echo "source /app/.venv/bin/activate" >> /root/.bashrc
+# vim
+RUN apt-get install -y libncurses5-dev libx11-dev libxtst-dev libxt-dev libsm-dev libxpm-dev silversearcher-ag
+RUN git clone https://github.com/take1014/configuration
+RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+RUN cp configuration/linux/.vimrc ~/
+RUN vim -c PlugInstall -c q -c q!
+RUN mkdir ~/.vim/colors
+RUN cp ~/.vim/plugged/jellybeans.vim/colors/jellybeans.vim ~/.vim/colors/
+RUN cp configuration/linux/.tmux.conf ~/
+RUN rm -rf configuration
 
-# PyTorchのインストール
-RUN /app/.venv/bin/pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121
-
-# コンテナの起動時にbashを実行
 CMD ["/bin/bash"]
