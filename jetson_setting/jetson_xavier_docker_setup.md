@@ -106,7 +106,7 @@ docker run -it --rm \
 
 - `--privileged`：USB デバイスへのフルアクセス  
 - `--net=host`：ホストのネットワークを利用  
-- `--device /dev/bus/usb:/dev/bus/usb`：Xavier への USB 接続  
+- `-v /dev/bus/usb:/dev/bus/usb`：Xavier への USB 接続  
 - `--cli install`：CLI モードでインストール  
 - `--flash all`：OS + SDK + ドライバすべてをフラッシュ  
 
