@@ -9,6 +9,7 @@ After=multi-user.target
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/fan_max.sh
+User=root
 RemainAfterExit=yes
 
 [Install]
