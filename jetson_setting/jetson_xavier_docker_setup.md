@@ -89,17 +89,25 @@ docker run -it --rm \
 ## 7. JetPack 5.1.5 を Xavier にフラッシュ
 
 ```bash
-docker run -it --rm \
-  --privileged \
+docker run -it --privileged \
   --net=host \
-  --device /dev/bus/usb:/dev/bus/usb \
+  -v /dev/bus/usb:/dev/bus/usb \
+  -v /dev:/dev \
+  -v /media/$USER:/media/nvidia:slave \
+  --name JetPack_Xavier_Devkit \
   sdkmanager:2.3.0.12626-Ubuntu_20.04 \
-  --cli install \
+  --cli \
+  --action install \
+  --login-type devzone \
   --product Jetson \
-  --targetos Linux \
-  --target JETSON_AGX_XAVIER \
+  --target-os Linux \
   --version 5.1.5 \
-  --flash all
+  --target JETSON_AGX_XAVIER \
+  --flash all \
+  --license accept \
+  --stay-logged-in true \
+  --collect-usage-data enable \
+  --exit-on-finish
 ```
 
 ### オプション解説
