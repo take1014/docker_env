@@ -1,0 +1,15 @@
+# copy to /etc/systemd/system/fanmax.service
+# sudo systemctl daemon-reload
+# sudo systemctl enable fanmax.service
+# sudo systemctl start fanmax.service
+[Unit]
+Description=Set Jetson Fan to Max
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/fan_max.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
